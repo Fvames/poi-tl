@@ -15,19 +15,18 @@
  */
 package com.deepoove.poi.policy;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
+import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.data.PictureRenderData;
+import com.deepoove.poi.template.ElementTemplate;
+import com.deepoove.poi.template.run.RunTemplate;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.deepoove.poi.XWPFTemplate;
-import com.deepoove.poi.data.PictureRenderData;
-import com.deepoove.poi.template.ElementTemplate;
-import com.deepoove.poi.template.run.RunTemplate;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class PictureRenderPolicy implements RenderPolicy {
 
@@ -37,7 +36,10 @@ public class PictureRenderPolicy implements RenderPolicy {
 	public void render(ElementTemplate eleTemplate, Object renderData, XWPFTemplate doc) {
 		RunTemplate runTemplate = (RunTemplate) eleTemplate;
 		XWPFRun run = runTemplate.getRun();
-		if (renderData == null) { return; }
+		if (renderData == null) {
+			run.setText("", 0);
+			return;
+		}
 		PictureRenderData pictureRenderData = null;
 		if (renderData instanceof PictureRenderData) {
 			pictureRenderData = (PictureRenderData) renderData;

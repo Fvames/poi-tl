@@ -15,17 +15,6 @@
  */
 package com.deepoove.poi.policy;
 
-import java.math.BigInteger;
-import java.util.List;
-
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
-
 import com.deepoove.poi.NiceXWPFDocument;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.RenderData;
@@ -34,6 +23,16 @@ import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.template.ElementTemplate;
 import com.deepoove.poi.template.run.RunTemplate;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
+
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * 简单的表格处理，暂无样式
@@ -53,7 +52,6 @@ public class SimpleTableRenderPolicy implements RenderPolicy {
 		TableRenderData tableData = (TableRenderData) data;
 		List<RenderData> headers = tableData.getHeaders();
 		List<Object> datas = tableData.getDatas();
-
 		if (datas == null || datas.isEmpty()) {
 			if (headers == null || headers.isEmpty()) {
 				runTemplate.getRun().setText("", 0);
@@ -141,7 +139,10 @@ public class SimpleTableRenderPolicy implements RenderPolicy {
 			Style style = textHead.getStyle();
 			String color = null == style ? null : style.getColor();
 			XWPFTableCell cell = table.getRow(0).getCell(i);
-			String[] fragment = textHead.getText().split(TextRenderPolicy.REGEX_LINE_CHARACTOR);
+			String[] fragment = null;
+			if (null != textHead.getText()) {
+				fragment = textHead.getText().split(TextRenderPolicy.REGEX_LINE_CHARACTOR);
+			}
             if (null != fragment){
                 cell.setText(fragment[0]);
                 for (int j = 1; j < fragment.length; j++) {
